@@ -3,6 +3,10 @@ import { produce } from 'immer';
 function reducer(state, action) {
   return produce(state, (draftState) => {
     switch (action.type) {
+      case 'initialize': {
+        return action.items;
+      }
+
       case 'add-item': {
         const itemIndex = state.findIndex(
           (item) => item.id === action.item.id
@@ -17,6 +21,7 @@ function reducer(state, action) {
           ...action.item,
           quantity: 1,
         });
+        window.localStorage.setItem('cart', JSON.stringify(draftState));
         return;
       }
 
@@ -26,6 +31,7 @@ function reducer(state, action) {
         );
 
         draftState.splice(itemIndex, 1);
+        window.localStorage.setItem('cart', JSON.stringify(draftState));
         return;
       }
     }
